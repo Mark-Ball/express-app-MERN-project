@@ -11,10 +11,16 @@ async function registerUser(req, res) {
     }
 }
 
+// log a user in
+function login(req, res) {
+    res.send('Approved');
+}
+
 // retrieve users from database
 
 // toggle approval on users
 
 module.exports = {
-    registerUser
+    registerUser,
+    login
 }
