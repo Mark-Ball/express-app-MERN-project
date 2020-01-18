@@ -13,12 +13,12 @@ async function registerUser(req, res) {
 
 // correct login details provided, respond with 'Approved'
 function loginSuccess(req, res) {
-    res.send('Approved');
+    res.sendStatus('200');
 }
 
 // incorrect login details provided, respond with 'Rejected'
 function loginFailure(req, res) {
-    res.send('Rejected');
+    res.sendStatus('403');
 }
 
 // retrieve users from database
