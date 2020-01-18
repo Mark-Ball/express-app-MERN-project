@@ -13,6 +13,8 @@ async function registerUser(req, res) {
 
 // retrieve users from database
 
+// toggle approval on users
+
 module.exports = {
     registerUser
 }
