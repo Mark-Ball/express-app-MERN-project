@@ -3,8 +3,8 @@ const UserModel = require('./../database/models/user_model');
 // write new user to database
 async function registerUser(req, res) {
     try {
-        req.body.approved = false;
-        await UserModel.create(req.body);
+        const { email, password } = req.body;
+        await UserModel.create({email, password, approved: false});
         res.sendStatus('200');
     } catch(error) {
         res.send(error);
