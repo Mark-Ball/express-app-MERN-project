@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "forever -c \"nodemon --exitcrash -L\" index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -19,7 +19,8 @@
     "passport-local": "^1.0.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.2",
-    "forever": "^2.0.0"
+    "forever": "^2.0.0",
+    "jest": "^24.9.0",
+    "nodemon": "^2.0.2"
   }
 }
