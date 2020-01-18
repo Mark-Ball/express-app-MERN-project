@@ -10,7 +10,7 @@ const UserSchema = new Schema({
         type: String,
         required: true,
         trim: true,
-        bcryt: true
+        bcrypt: true
     },
     approved: {
         type: Boolean,

@@ -11,9 +11,14 @@ async function registerUser(req, res) {
     }
 }
 
-// log a user in
-function login(req, res) {
+// correct login details provided, respond with 'Approved'
+function loginSuccess(req, res) {
     res.send('Approved');
+}
+
+// incorrect login details provided, respond with 'Rejected'
+function loginFailure(req, res) {
+    res.send('Rejected');
 }
 
 // retrieve users from database
@@ -22,5 +27,6 @@ function login(req, res) {
 
 module.exports = {
     registerUser,
-    login
+    loginSuccess,
+    loginFailure
 }

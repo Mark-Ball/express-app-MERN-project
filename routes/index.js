@@ -11,12 +11,12 @@ router.post('/newuser', UsersController.registerUser)
 // user login authenticated using passport local strategy
 router.post('/login',
     passport.authenticate('local', {
-        failureRedirect: '/login',
+        failureRedirect: '/loginFailure',
         session: false
     }),
-    UsersController.login);
-    
+    UsersController.loginSuccess);
+
 // if authentication fails, respond with 'Rejected'
-router.get('/login', (req, res) => { res.send('Rejected')} );
+router.get('/loginFailure', UsersController.loginFailure);
 
 module.exports = router;
