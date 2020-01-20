@@ -7,18 +7,13 @@ async function registerUser(req, res) {
         await UserModel.create({email, password, approved: false});
         res.sendStatus('200');
     } catch(error) {
-        res.send(error);
+        res.sendStatus('400');
     }
 }
 
-// correct login details provided, respond with 'Approved'
+// correct login details provided, respond with 200 status code
 function loginSuccess(req, res) {
-    res.send('Approved');
-}
-
-// incorrect login details provided, respond with 'Rejected'
-function loginFailure(req, res) {
-    res.send('Rejected');
+    res.sendStatus('200');
 }
 
 // retrieve users from database
@@ -27,6 +22,5 @@ function loginFailure(req, res) {
 
 module.exports = {
     registerUser,
-    loginSuccess,
-    loginFailure
+    loginSuccess
 }
