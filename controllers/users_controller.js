@@ -7,7 +7,7 @@ async function registerUser(req, res) {
         await UserModel.create({email, password, approved: false});
         res.sendStatus('200');
     } catch(error) {
-        res.send(error);
+        res.sendStatus('400');
     }
 }
 
