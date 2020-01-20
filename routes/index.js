@@ -3,7 +3,7 @@ const router = express.Router();
 const UsersController = require('./../controllers/users_controller');
 const FilesController = require('./../controllers/files_controller');
 const passport = require('passport');
-require('./../config/passport_local');
+require('./../config/passport');
 
 router.get('/', (req, res) => { res.send('hello world') });
 router.post('/newuser', UsersController.registerUser)
