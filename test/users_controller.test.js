@@ -8,17 +8,15 @@ const UserModel = require('./../database/models/user_model');
 
 let mongoose;
 
-beforeEach(async function() {
+before(async function() {
     mongoose = await dbConnect();
-    console.log('db connected');
 })
 
-afterEach(async function() {
+after(async function() {
     await mongoose.connection.close();
-    console.log('db connection closed');
 })
 
-describe('Check Mocha is working in users_controller.test', function(){
+describe('Check Mocha is working in users_controller.test', function() {
     it('true is true', () => {
         expect(true).to.be.true;
     })
@@ -42,7 +40,7 @@ describe('User registration tests', function() {
             .expect(200);
     })
 
-    it('registerUser() returns 400 when called with incorrect info', async function() {
+    it('registerUser() returns 400 status when called with incorrect info', async function() {
         const response = await supertest(app)
             .post('/newuser')
             .send({
@@ -52,8 +50,8 @@ describe('User registration tests', function() {
     })
 })
 
-describe('login tests', () => {
-    it('user login succeeds with correct details', async function(){
+describe('Login tests', function() {
+    it('user login succeeds with correct details', async function() {
         const response = await supertest(app)
             .post('/login')
             .send({
@@ -64,14 +62,14 @@ describe('login tests', () => {
     })
 
     // need to re-write route so it returns 400 for a failure, not 302
-    it('user login fails with no details', async function(){
+    it('user login fails with no details', async function() {
         const response = await supertest(app)
             .post('/login')
             .send({})
             .expect(302);
     })
 
-    it('user login fails with incorrect password', async function(){
+    it('user login fails with incorrect password', async function() {
         const response = await supertest(app)
             .post('/login')
             .send({
