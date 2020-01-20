@@ -1,4 +1,3 @@
-// require('./setup');
 const supertest = require('supertest');
 const app = require('./../app');
 require('dotenv').config();
@@ -51,31 +50,30 @@ describe('User registration tests', function() {
 })
 
 describe('Login tests', function() {
-    it('user login succeeds with correct details', async function() {
+    it('POST /login succeeds with correct details', async function() {
         const response = await supertest(app)
             .post('/login')
             .send({
                 email: 'mark@test.com',
-                password: "qwerty"
+                password: 'qwerty'
             })
             .expect(200);
     })
 
-    // need to re-write route so it returns 400 for a failure, not 302
-    it('user login fails with no details', async function() {
+    it('POST /login fails with no details', async function() {
         const response = await supertest(app)
             .post('/login')
             .send({})
-            .expect(302);
+            .expect(400);
     })
 
-    it('user login fails with incorrect password', async function() {
+    it('POST /login fails with incorrect password', async function() {
         const response = await supertest(app)
             .post('/login')
             .send({
                 email: 'mark@test.com',
-                password: "asdf"
+                password: 'asdf'
             })
-            .expect(302);
+            .expect(401);
     })
 })

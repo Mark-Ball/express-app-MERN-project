@@ -11,14 +11,9 @@ async function registerUser(req, res) {
     }
 }
 
-// correct login details provided, respond with 'Approved'
+// correct login details provided, respond with 200 status code
 function loginSuccess(req, res) {
     res.sendStatus('200');
-}
-
-// incorrect login details provided, respond with 'Rejected'
-function loginFailure(req, res) {
-    res.sendStatus('403');
 }
 
 // retrieve users from database
@@ -27,6 +22,5 @@ function loginFailure(req, res) {
 
 module.exports = {
     registerUser,
-    loginSuccess,
-    loginFailure
+    loginSuccess
 }
