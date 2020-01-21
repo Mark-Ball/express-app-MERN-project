@@ -15,4 +15,6 @@ router.post('/login',
     UsersController.loginSuccess
 );
 
+router.get("/file/:key", FilesController.show);
+
 module.exports = router;
