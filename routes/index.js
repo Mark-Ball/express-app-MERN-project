@@ -5,7 +5,7 @@ const FilesController = require('./../controllers/files_controller');
 const passport = require('passport');
 require('./../config/passport');
 
-router.get('/', (req, res) => { res.send('hello world') });
+router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => { res.send('hello world') });
 router.post('/newuser', UsersController.registerUser)
 
 // user login authenticated using passport local strategy

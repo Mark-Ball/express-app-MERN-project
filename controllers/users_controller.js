@@ -5,18 +5,17 @@ const jwt = require('jsonwebtoken');
 async function registerUser(req, res) {
     try {
         const { email, password } = req.body;
-        await UserModel.create({email, password, approved: false});
+        await UserModel.create({ email, password, approved: false });
         res.sendStatus('200');
     } catch(error) {
         res.sendStatus('400');
     }
 }
 
-// correct login details provided, respond with 200 status code
+// correct login details provided, create JWT and send
 function loginSuccess(req, res) {
     const token = jwt.sign({ sub: req.user._id }, process.env.JWT_SECRET);
     res.json(token);
-    res.sendStatus('200');
 }
 
 // retrieve users from database
