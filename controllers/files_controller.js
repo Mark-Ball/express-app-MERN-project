@@ -19,14 +19,19 @@ function searchFiles(req, res) {
 
 }
 
-function show(req,res){
+
+async function show(req,res){
+    const {key} = req.params;
+
+
+    console.log(key)
     const s3_Bucket = process.env.Bucket;
 
     // Create S3 service object
     const s3 = new aws.S3({apiVersion: '2006-03-01'});
 
     // Call S3 to get an object creates readable stream for display on the front end
-    const stream = s3.getObject({Bucket: s3_Bucket, Key: "sample.pdf"}).createReadStream();
+    const stream = await s3.getObject({Bucket: s3_Bucket, Key: key}).createReadStream();
     stream.on("error", (err)=>{
         console.log(err);
         res.end(err);
