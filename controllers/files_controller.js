@@ -1,6 +1,7 @@
 const FileModel = require('./../database/models/file_model');
 const aws = require("aws-sdk");
 require("dotenv").config();     // config dotenv to load in dotenv file
+const fs = require("fs");
 
 aws.config.update({
     region: "ap-southeast-2",
@@ -24,14 +25,13 @@ function show(req,res){
     // Create S3 service object
     const s3 = new aws.S3({apiVersion: '2006-03-01'});
 
-    // Call S3 to list the buckets
-    s3.getObject({Bucket: s3_Bucket, Key: "dummy.pdf"}, function(err, data) {
-    if (err) {
-        console.log("Error", err);
-    } else {
-        return res.send(data.Body);
-    }
-});
+    // Call S3 to get an object creates readable stream for display on the front end
+    const stream = s3.getObject({Bucket: s3_Bucket, Key: "sample.pdf"}).createReadStream();
+    stream.on("error", (err)=>{
+        console.log(err);
+        res.end(err);
+    })
+    stream.pipe(res);
 }
 
 module.exports = {
