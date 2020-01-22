@@ -12,6 +12,7 @@ before(async function() {
 })
 
 after(async function() {
+    await UserModel.deleteMany({});
     await mongoose.connection.close();
 })
 
@@ -26,6 +27,7 @@ describe('User registration tests', function() {
         const userEmail = 'test@gmail.com';
         const { _id } = await UserModel.create({ email: userEmail, password: 'qwerty' });
         const { email } = await UserModel.findById(_id)
+
         expect(email).to.equal(userEmail);
     })
 
@@ -36,7 +38,8 @@ describe('User registration tests', function() {
                 email: 'mark@test.com',
                 password: 'qwerty'
             })
-            .expect(200);
+
+        expect(response.status).to.equal(200);
     })
 
     it('registerUser() returns 400 status when called with incorrect info', async function() {
@@ -45,70 +48,93 @@ describe('User registration tests', function() {
             .send({
                 email: 'mark2@test.com'
             })
-            .expect(400);
+
+        expect(response.status).to.equal(400);
     })
 })
 
 describe('Login tests', function() {
     it('POST /login received JWT with correct details', async function() {
+        await supertest(app)
+            .post('/newuser')
+            .send({
+                email: 'mark2@test.com',
+                password: 'asdfgh'
+            })
+        
         const response = await supertest(app)
             .post('/login')
             .send({
-                email: 'mark@test.com',
-                password: 'qwerty'
+                email: 'mark2@test.com',
+                password: 'asdfgh'
             })
-            .then((res) => {
-                expect(200);
-                expect(/.*\..*\./.test(jwt)).to.be.true;
-            })
-            
+
+        expect(response.status).to.equal(200);
+        expect(/.*\..*\./.test(response.body)).to.be.true;     
     })
 
     it('POST /login fails with no details', async function() {
         const response = await supertest(app)
             .post('/login')
             .send({})
-            .expect(400);
+
+        expect(response.status).to.equal(400)
     })
 
     it('POST /login fails with incorrect password', async function() {
+        await supertest(app)
+            .post('/newuser')
+            .send({
+                email: 'mark3@test.com',
+                password: '123456'
+            })
+        
         const response = await supertest(app)
             .post('/login')
             .send({
-                email: 'mark@test.com',
+                email: 'mark3@test.com',
                 password: 'asdf'
             })
-            .expect(401);
+
+        expect(response.status).to.equal(401);
     })
 })
 
 describe('Private route access tests', function() {
-    it('Private route cannot be accessed without authorisation header', async function() {
+    it('Private route cannot be accessed without authorization header', async function() {
         const response = await supertest(app)
             .get('/testPrivate')
-            .then((res) => {
-                expect(res.status).to.equal(401);
-            }) 
+
+        expect(response.status).to.equal(401);
     })
 
-    it('Private route cannot be accessed with incorrect authorisation header', function() {
-        supertest(app)
+    it('Private route cannot be accessed with incorrect authorization header', async function() {
+        const response = await supertest(app)
             .get('/testPrivate')
             .set('Authorization', 'asdf')
-            .then((res) => {
-                expect(res.status).to.equal(401);
-            })
+
+        expect(response.status).to.equal(401);
     })
 
-    // it('Private route can be accessed with correct authorization header', function() {
-    //     console.log(jwt);
-    //     supertest(app)
-    //         .get('/testPrivate')
-    //         // .set('Authorization')
-    //         .then((res) => {
-    //             console.log(res);
-    //             expect(res.status).to.equal(200);
-    //         })
-    //         .catch(err => console.log(err));
-    // })
+    it('Private route can be accessed with correct authorization header', async function() {
+        await supertest(app)
+            .post('/newuser')
+            .send({
+                email: 'mark4@test.com',
+                password: 'qwerty'
+            })
+        
+        const { body: jwt } = await supertest(app)
+            .post('/login')
+            .send({
+                email: 'mark4@test.com',
+                password: 'qwerty'
+            })
+        
+        const response = await supertest(app)
+            .get('/testPrivate')
+            .set('Authorization', 'Bearer ' + jwt)
+        
+        expect(response.status).to.equal(200);
+    })
 })
