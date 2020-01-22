@@ -50,14 +50,18 @@ describe('User registration tests', function() {
 })
 
 describe('Login tests', function() {
-    it('POST /login succeeds with correct details', async function() {
+    it('POST /login received JWT with correct details', async function() {
         const response = await supertest(app)
             .post('/login')
             .send({
                 email: 'mark@test.com',
                 password: 'qwerty'
             })
-            .expect(200);
+            .then((res) => {
+                expect(200);
+                expect(/.*\..*\./.test(jwt)).to.be.true;
+            })
+            
     })
 
     it('POST /login fails with no details', async function() {
@@ -76,4 +80,35 @@ describe('Login tests', function() {
             })
             .expect(401);
     })
+})
+
+describe('Private route access tests', function() {
+    it('Private route cannot be accessed without authorisation header', async function() {
+        const response = await supertest(app)
+            .get('/testPrivate')
+            .then((res) => {
+                expect(res.status).to.equal(401);
+            }) 
+    })
+
+    it('Private route cannot be accessed with incorrect authorisation header', function() {
+        supertest(app)
+            .get('/testPrivate')
+            .set('Authorization', 'asdf')
+            .then((res) => {
+                expect(res.status).to.equal(401);
+            })
+    })
+
+    // it('Private route can be accessed with correct authorization header', function() {
+    //     console.log(jwt);
+    //     supertest(app)
+    //         .get('/testPrivate')
+    //         // .set('Authorization')
+    //         .then((res) => {
+    //             console.log(res);
+    //             expect(res.status).to.equal(200);
+    //         })
+    //         .catch(err => console.log(err));
+    // })
 })
