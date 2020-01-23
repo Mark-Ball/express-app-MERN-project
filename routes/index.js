@@ -19,8 +19,10 @@ router.post('/login',
 router.get('/testPrivate', passport.authenticate('jwt', { session: false }), (req, res) => { res.send('Access granted') });
 
 // get route to get all users
+// put authorisation in here so only admin can see it
 router.get('/users', UsersController.getUsers);
 // post route to toggle the approval status on a user
-
+// put authorisation in here so only admin can see it
+router.post('/toggleApproval', UsersController.toggleApproval);
 
 module.exports = router;

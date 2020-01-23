@@ -36,17 +36,44 @@ function loginSuccess(req, res) {
 // retrieve users from database
 async function getUsers(req, res) {
     try {
+        // query the database for all users
         const users = await UserModel.find();
+        // respond with all users as JSON
         res.json(JSON.stringify(users));
     } catch(error) {
+        // if there is an error, respond with 400 status
         res.sendStatus('400');
     }
 }
 
-// toggle approval on users
+// toggle approval on specific user
+async function toggleApproval(req, res) {
+    try {
+        // the user document to update is identified by the id on the request
+        const { id } = req.body;
+        // get the user document
+        let { approved } = await UserModel.findById(id);
+        // reverse the approval status
+        approved = !approved;
+        // update the document with new approval status
+        // updateOne will return an object if successful, else return nothing
+        const updateSucceeded = await UserModel.updateOne({ _id: id }, { approved: approved });
+        // if update was successful, respond with 200 status
+        if (updateSucceeded) {
+            res.sendStatus('200');
+        // if update unsuccessful, respond with 400 status
+        } else {
+            res.sendStatus('400');
+        }
+    } catch(error) {
+        // if there is an error, respond with 400 status
+        res.sendStatus('400');
+    }
+}
 
 module.exports = {
     registerUser,
     loginSuccess,
-    getUsers
+    getUsers,
+    toggleApproval
 }
