@@ -34,10 +34,19 @@ function loginSuccess(req, res) {
 }
 
 // retrieve users from database
+async function getUsers(req, res) {
+    try {
+        const users = await UserModel.find();
+        res.json(JSON.stringify(users));
+    } catch(error) {
+        res.sendStatus('400');
+    }
+}
 
 // toggle approval on users
 
 module.exports = {
     registerUser,
-    loginSuccess
+    loginSuccess,
+    getUsers
 }
