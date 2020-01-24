@@ -12,7 +12,7 @@ async function registerUser(req, res) {
         // destructuring used to create email and password variables from req.body
         const { email, password } = req.body;
         // email and password variables used to create entry in user collection of database
-        const { _id } = await UserModel.create({ email, password, approved: false });
+        const { _id } = await UserModel.create({ email, password, approved: false, pending: true });
         // create a JWT based on the id the user just created
         const token = createJWT(_id);
         // if successful, respond with the JWT
@@ -57,7 +57,7 @@ async function toggleApproval(req, res) {
         approved = !approved;
         // update the document with new approval status
         // updateOne will return an object if successful, else return nothing
-        const updateSucceeded = await UserModel.updateOne({ _id: id }, { approved: approved });
+        const updateSucceeded = await UserModel.updateOne({ _id: id }, { approved: approved, pending: false });
         // if update was successful, respond with 200 status
         if (updateSucceeded) {
             res.sendStatus('200');

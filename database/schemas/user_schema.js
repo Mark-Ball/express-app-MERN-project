@@ -15,6 +15,10 @@ const UserSchema = new Schema({
     approved: {
         type: Boolean,
         default: false
+    },
+    pending: {
+        type: Boolean,
+        default: true
     }
 })
 
