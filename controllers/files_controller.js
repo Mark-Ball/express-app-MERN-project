@@ -19,12 +19,10 @@ function searchFiles(req, res) {
 
 }
 
-
+// retrieve single file based on selection in returned search
 async function show(req,res){
     const {key} = req.params;
 
-
-    console.log(key)
     const s3_Bucket = process.env.Bucket;
 
     // Create S3 service object

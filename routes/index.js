@@ -15,9 +15,9 @@ router.post('/login',
     UsersController.loginSuccess
 );
 
-router.get("/file/:key", FilesController.show);
 
-// router.post("/file/:key", FilesController.retrieveFile);
+// file retriever that gets the corresponding file dependant on the key 
+router.get("/file/:key", FilesController.show);
 
 // a route to test that restricting access using a JWT is working
 router.get('/testPrivate', passport.authenticate('jwt', { session: false }), (req, res) => { res.send('Access granted') });
