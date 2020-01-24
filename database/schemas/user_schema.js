@@ -14,7 +14,7 @@ const UserSchema = new Schema({
     },
     approved: {
         type: Boolean,
-        default: false,
+        default: false
     },
     pending: {
         type: Boolean,
@@ -23,6 +23,10 @@ const UserSchema = new Schema({
     dateCreated: {
         type: Date,
         default: Date.now
+    },
+    admin: {
+        type: Boolean,
+        default: false
     }
 })
 

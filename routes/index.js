@@ -3,6 +3,7 @@ const router = express.Router();
 const UsersController = require('./../controllers/users_controller');
 const FilesController = require('./../controllers/files_controller');
 const passport = require('passport');
+const adminAuth = require('./../config/admin_auth');
 require('./../config/passport');
 
 router.get('/', (req, res) => { res.send('hello world') });
@@ -16,7 +17,7 @@ router.post('/login',
 );
 
 // a route to test that restricting access using a JWT is working
-router.get('/testPrivate', passport.authenticate('jwt', { session: false }), (req, res) => { res.send('Access granted') });
+router.get('/testPrivate', passport.authenticate('jwt', { session: false }), adminAuth, (req, res) => { res.send('Access granted') });
 
 // get route to get all users
 // put authorisation in here so only admin can see it
