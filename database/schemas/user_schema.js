@@ -14,11 +14,15 @@ const UserSchema = new Schema({
     },
     approved: {
         type: Boolean,
-        default: false
+        default: false,
     },
     pending: {
         type: Boolean,
         default: true
+    },
+    dateCreated: {
+        type: Date,
+        default: Date.now
     }
 })
 
