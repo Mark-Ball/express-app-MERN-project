@@ -33,6 +33,12 @@ function loginSuccess(req, res) {
     res.json(token);
 }
 
+// respond with 200 status
+// middleware has already checked that the user is the admin
+function confirmAdmin(req, res) {
+    res.sendStatus('200');
+}
+
 // retrieve users from database
 async function getUsers(req, res) {
     try {
@@ -74,6 +80,7 @@ async function toggleApproval(req, res) {
 module.exports = {
     registerUser,
     loginSuccess,
+    confirmAdmin,
     getUsers,
     toggleApproval
 }

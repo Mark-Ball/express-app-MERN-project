@@ -16,11 +16,8 @@ router.post('/login',
     UsersController.loginSuccess
 );
 
-// a route to test that restricting access using a JWT is working
-router.get('/testPrivate', passport.authenticate('jwt', { session: false }), (req, res) => { res.send('Access granted') });
-
 // get route to return whether the request came from the admin
-router.get('/confirmAdmin', passport.authenticate('jwt', { session: false }), adminAuth, (req, res) => { res.sendStatus('200') });
+router.get('/confirmAdmin', passport.authenticate('jwt', { session: false }), adminAuth, UsersController.confirmAdmin);
 
 // get route to get all users
 router.get('/users', passport.authenticate('jwt', { session: false }), adminAuth, UsersController.getUsers);
