@@ -19,6 +19,9 @@ router.post('/login',
 // get route to return whether the request came from the admin
 router.get('/confirmAdmin', passport.authenticate('jwt', { session: false }), adminAuth, UsersController.confirmAdmin);
 
+// file retriever that gets the corresponding file dependant on the key 
+router.get("/file/:key", FilesController.show);
+
 // get route to get all users
 router.get('/users', passport.authenticate('jwt', { session: false }), adminAuth, UsersController.getUsers);
 
