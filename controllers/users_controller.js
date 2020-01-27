@@ -54,6 +54,7 @@ async function getUsers(req, res) {
 
 // toggle approval on specific user
 async function toggleApproval(req, res) {
+        console.log('toggleApproval ran in users controller');
     try {
         // the user document to update is identified by the id on the request
         const { id } = req.body;
