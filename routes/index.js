@@ -15,6 +15,9 @@ router.post('/login',
     UsersController.loginSuccess
 );
 
+router.post("/createFile", FilesController.saveFile);
+
+router.post("/category", FilesController.searchFiles);
 
 // file retriever that gets the corresponding file dependant on the key 
 router.get("/file/:key", FilesController.show);

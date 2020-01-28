@@ -10,13 +10,33 @@ aws.config.update({
 })
 
 // save file to db and s3
-function saveFile(req, res) {
+async function saveFile(req, res) {
+    try {
+        const { name, tags, location } = req.body;
 
+        // creates the object in the database with name, tags and location sent in request
+        const file = await FileModel.create({name: name, tags: tags, location: location})
+        // if successful sends file back in json format as response
+        res.json(file);
+    } catch (err){
+        // error handling sends back error in response
+        res.sendError(err);
+    }
 }
 
 // retrieve files based on search
-function searchFiles(req, res) {
-
+async function searchFiles(req, res) {
+    const { querySolution, queryBenefits } = req.body;
+    let result;
+    console.log(queryBenefits, querySolution);
+    if(querySolution){
+        result = await FileModel.find({"tags.solution": querySolution});
+    } else if (queryBenefits) {
+        result = await FileModel.find({"tags.benefits": queryBenefits});
+    }   else {
+        // result = await FileModel.find();
+    }
+    res.json(result);
 }
 
 // retrieve single file based on selection in returned search
