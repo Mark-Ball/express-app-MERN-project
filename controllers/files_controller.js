@@ -11,11 +11,11 @@ aws.config.update({
 })
 
 const storage = multer.diskStorage({
-      destination: function (req, file, cb) {
-      cb(null, 'public')
+    destination: function (req, file, cb) {
+    cb(null, 'public')
     },
     filename: function (req, file, cb) {
-      cb(null, Date.now() + '-' +file.originalname )
+      cb(null, Date.now() + '-' + file.originalname )
     }
 });
 
@@ -23,12 +23,16 @@ const upload = multer({ storage: storage }).single('file');
 
 // save file to db and s3
 function saveFile(req, res) {
+
     upload(req, res, function (err) {
-           if (err instanceof multer.MulterError) {
-               return res.status(500).json(err)
-           } else if (err) {
-               return res.status(500).json(err)
-           }
+        console.log(req.body);
+        if (err instanceof multer.MulterError) {
+            return res.status(500).json(err)
+        } else if (err) {
+            return res.status(500).json(err)
+        }
+        // logic to write into MongoDB
+
       return res.status(200).send(req.file)
     })
 }
