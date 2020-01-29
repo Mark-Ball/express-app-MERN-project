@@ -2,6 +2,7 @@ const FileModel = require('./../database/models/file_model');
 const aws = require("aws-sdk");
 require("dotenv").config();     // config dotenv to load in dotenv file
 const fs = require("fs");
+const multer = require('multer');
 
 aws.config.update({
     region: "ap-southeast-2",
@@ -9,9 +10,27 @@ aws.config.update({
     secretAccessKey: process.env.AWSSecretKey
 })
 
+const storage = multer.diskStorage({
+      destination: function (req, file, cb) {
+      cb(null, 'public')
+    },
+    filename: function (req, file, cb) {
+      cb(null, Date.now() + '-' +file.originalname )
+    }
+});
+
+const upload = multer({ storage: storage }).single('file');
+
 // save file to db and s3
 function saveFile(req, res) {
-
+    upload(req, res, function (err) {
+           if (err instanceof multer.MulterError) {
+               return res.status(500).json(err)
+           } else if (err) {
+               return res.status(500).json(err)
+           }
+      return res.status(200).send(req.file)
+    })
 }
 
 // retrieve files based on search
