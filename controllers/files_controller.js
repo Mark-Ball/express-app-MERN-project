@@ -30,7 +30,7 @@ async function searchFiles(req, res) {
     let result;
     console.log(queryBenefits, querySolution);
     if(querySolution){
-        result = await FileModel.find({"tags.solution": querySolution});
+        result = await FileModel.find({ "tags.solution": querySolution });
     } else if (queryBenefits) {
         result = await FileModel.find({"tags.benefits": queryBenefits});
     }   else {
