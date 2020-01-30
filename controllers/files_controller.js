@@ -27,7 +27,9 @@ const storage = multerS3({
 const upload = multer({ storage: storage }).single('file');
 
 // save file to db and s3
-function saveFile(req, res) {
+async function saveFile(req, res) {
+    try {
+        const { name, tags, location } = req.body;
 
     upload(req, res, async function (err) {
         const { name, solution, dateCreated, proficiency, lessonContent, description, prerequisites, whoItBenefits } = req.body;
@@ -46,8 +48,18 @@ function saveFile(req, res) {
 }
 
 // retrieve files based on search
-function searchFiles(req, res) {
-
+async function searchFiles(req, res) {
+    const { querySolution, queryBenefits } = req.body;
+    let result;
+    console.log(queryBenefits, querySolution);
+    if(querySolution){
+        result = await FileModel.find({ "tags.solution": querySolution });
+    } else if (queryBenefits) {
+        result = await FileModel.find({"tags.benefits": queryBenefits});
+    }   else {
+        // result = await FileModel.find();
+    }
+    res.json(result);
 }
 
 // retrieve single file based on selection in returned search
