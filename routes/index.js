@@ -25,6 +25,8 @@ router.post("/category", FilesController.searchFiles);
 // file retriever that gets the corresponding file dependant on the key 
 router.get("/file/:key", FilesController.show);
 
+router.post('/file/upload', FilesController.saveFile);
+
 // get route to get all users
 router.get('/users', passport.authenticate('jwt', { session: false }), adminAuth, UsersController.getUsers);
 
