@@ -28,8 +28,6 @@ const upload = multer({ storage: storage }).single('file');
 
 // save file to db and s3
 async function saveFile(req, res) {
-    try {
-        const { name, tags, location } = req.body;
 
     upload(req, res, async function (err) {
         const { name, solution, dateCreated, proficiency, lessonContent, description, prerequisites, whoItBenefits } = req.body;
