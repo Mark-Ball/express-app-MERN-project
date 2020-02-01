@@ -16,6 +16,9 @@ router.post('/login',
     UsersController.loginSuccess
 );
 
+// post route to check that the email a user is attempting to register is not already in the db
+router.post('/emailAvailable', UsersController.emailAvailable);
+
 router.post("/createFile", FilesController.saveFile);
 // get route to return whether the request came from the admin
 router.get('/confirmAdmin', passport.authenticate('jwt', { session: false }), adminAuth, UsersController.confirmAdmin);
