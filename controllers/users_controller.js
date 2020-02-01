@@ -6,6 +6,14 @@ function createJWT(payload) {
     return jwt.sign({ sub: payload }, process.env.JWT_SECRET);
 }
 
+// check the email a user is attempting to register against the database
+// send back false if the user already exists, else send back true
+async function emailAvailable(req, res) {
+    const { email } = req.body;
+    const user = await UserModel.findOne({ email });
+    user ? res.send(false) : res.send(true);
+}
+
 // write new user to database
 async function registerUser(req, res) {
     try {
@@ -78,6 +86,7 @@ async function toggleApproval(req, res) {
 }
 
 module.exports = {
+    emailAvailable,
     registerUser,
     loginSuccess,
     confirmAdmin,
