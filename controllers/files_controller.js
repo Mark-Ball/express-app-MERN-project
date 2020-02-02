@@ -47,15 +47,15 @@ async function saveFile(req, res) {
 
 // retrieve files based on search
 async function searchFiles(req, res) {
-    const { querySolution, queryBenefits } = req.body;
+    const { querySolution, queryBenefits, queryPrereqs } = req.body;
     let result;
-    console.log(queryBenefits, querySolution);
+    console.log(queryBenefits, querySolution, queryPrereqs);
     if(querySolution){
         result = await FileModel.find({ "tags.solution": querySolution });
     } else if (queryBenefits) {
         result = await FileModel.find({"tags.benefits": queryBenefits});
-    }   else {
-        // result = await FileModel.find();
+    }   else if (queryPrereqs) {
+        result = await FileModel.find({"tags.prerequisites": queryPrereqs});
     }
     res.json(result);
 }
