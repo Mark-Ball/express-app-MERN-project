@@ -119,17 +119,16 @@ describe('Admin tests', async function() {
             .get('/users')
             .send('Authorization', 'Bearer ' + jwt);
 
-        expect(response.status).to.equal(200);
+        expect(response.status).to.equal(401);
     })
 
-    it('admin can access /users endpoint', async function() {
+    it.only('admin can access /users endpoint', async function() {
         const { body: jwt } = await supertest(app)
             .post('/login')
             .send({
                 email: 'admin',
                 password: 'admin'
             });
-        console.log(jwt);
 
         const response = await supertest(app)
             .get('/users')
