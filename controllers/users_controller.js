@@ -6,20 +6,22 @@ function createJWT(payload) {
     return jwt.sign({ sub: payload }, process.env.JWT_SECRET);
 }
 
-// write new user to database
+// check if the email is already registered, respond with false if it is
+// if email is available, create the user record, respond with jwt
 async function registerUser(req, res) {
     try {
-        // destructuring used to create email and password variables from req.body
         const { email, password } = req.body;
-        // email and password variables used to create entry in user collection of database
+        const user = await UserModel.findOne({ email });
+        if (user) {
+            res.send(false);
+            return;
+        }
+
         const { _id } = await UserModel.create({ email, password, approved: false, pending: true });
-        // create a JWT based on the id the user just created
         const token = createJWT(_id);
-        // if successful, respond with the JWT
         res.json(token);
-        // catch block included in case of error interfacing with MongoDB
+
     } catch(error) {
-        // send 400 status in case of error
         res.sendStatus('400');
     }
 }
