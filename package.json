@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node app.js",
     "dev": "forever -c \"nodemon --exitcrash -L\" index.js",
     "test": "mocha"
   },
