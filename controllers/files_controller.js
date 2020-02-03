@@ -28,7 +28,7 @@ const upload = multer({ storage: storage }).single('file');
 
 // save file to db and s3
 async function saveFile(req, res) {
-    
+    console.log("working?");
     upload(req, res, async function (err) {
         const { name, solution, dateCreated, proficiency, lessonContent, description, prerequisites, whoItBenefits } = req.body;
         if (err instanceof multer.MulterError) {
@@ -36,6 +36,7 @@ async function saveFile(req, res) {
         } else if (err) {
             return res.status(500).json(err)
         }
+
         // logic to write into MongoDB
         await FileModel.create({
             name: name, tags: { solution: solution, createdOn: dateCreated, proficiency: proficiency, content: lessonContent, 
