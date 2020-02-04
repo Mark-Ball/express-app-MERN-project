@@ -8,27 +8,13 @@ const FileModel = require('./../database/models/file_model');
 let mongoose;
 
 // before running the tests, connect to the db and create 1 user and 1 admin
-// before(async function() {
-//     mongoose = await dbConnect();
-
-//     await UserModel.create({
-//         email: 'admin',
-//         password: 'admin',
-//         admin: true
-//     });
-// });
+before(async function() {
+    mongoose = await dbConnect();
+});
 
 // after running the tests, delete all users from the db and close the connection
-// after(async function() {
-//     await UserModel.deleteMany({});
-//     await FileModel.deleteMany({});
-//     await mongoose.connection.close();
-// });
-
-describe('Check Mocha is working in files_controller.test', function() {
-    it('true is true', () => {
-        expect(true).to.be.true;
-    });
+after(async function() {
+    await mongoose.connection.close();
 });
 
 describe('PDF display functionality', function() {
