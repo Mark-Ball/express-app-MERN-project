@@ -25,7 +25,7 @@ before(async function() {
 
 // after running the tests, delete all users from the db and close the connection
 after(async function() {
-    // await UserModel.deleteMany({});
+    await UserModel.deleteMany({});
     await mongoose.connection.close();
 });
 
@@ -122,7 +122,7 @@ describe('Admin tests', async function() {
         expect(response.status).to.equal(401);
     })
 
-    it.only('admin can access /users endpoint', async function() {
+    it('admin can access /users endpoint', async function() {
         const { body: jwt } = await supertest(app)
             .post('/login')
             .send({

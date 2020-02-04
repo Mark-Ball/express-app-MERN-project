@@ -14,21 +14,22 @@ aws.config.update({
 const s3 = new aws.S3({apiVersion: '2006-03-01'});
 const s3_Bucket = process.env.Bucket;
 // variable used as a unique variable name to be stored in bucket
-const fileName = Date.now();
-const storage = multerS3({
-    s3: s3,
-    bucket: s3_Bucket,
-    key: function (req,file,cb){
-        const ext = file.mimetype.split("/")[1];
-        cb(null, fileName + "."+ ext);
-    }
-});
 
-const upload = multer({ storage: storage }).single('file');
 
 // save file to db and s3
 async function saveFile(req, res) {
-    
+    const fileName = Date.now();
+    const storage = multerS3({
+        s3: s3,
+        bucket: s3_Bucket,
+        key: function (req,file,cb){
+            const ext = file.mimetype.split("/")[1];
+            cb(null, fileName + "."+ ext);
+        }
+    });
+
+    const upload = multer({ storage: storage }).single('file');
+
     upload(req, res, async function (err) {
         const { name, solution, dateCreated, proficiency, lessonContent, description, prerequisites, whoItBenefits } = req.body;
         if (err instanceof multer.MulterError) {
