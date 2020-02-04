@@ -47,21 +47,42 @@ async function saveFile(req, res) {
 
 // retrieve files based on search
 async function searchFiles(req, res) {
-    const { querySolution, queryBenefits, queryPrereqs, query, solutionsArr, teamsArr, prereqArr } = req.body;
+    const { querySolution, queryBenefits, queryPrereqs, value, solutionsArr, teamsArr, prereqArr } = req.body;
     let result;
-    console.log(queryBenefits, querySolution, queryPrereqs);
+    // console.log(queryBenefits, querySolution, queryPrereqs);
     if(querySolution){
         result = await FileModel.find({ "tags.solution": querySolution });
     } else if (queryBenefits) {
         result = await FileModel.find({"tags.benefits": queryBenefits});
     }   else if (queryPrereqs) {
         result = await FileModel.find({"tags.prerequisites": queryPrereqs});
-    }   else if (query[0]){
+    }   else if (value[0]){
         const advQuery = [solutionsArr, teamsArr, prereqArr ];
-        advQuery.map(arr=>{
-            (Array.isArray(arr) && arr.length) ? arr : null ;
+        const test = advQuery.map(arr=>{
+            const q = (Array.isArray(arr) && arr.length) ? arr : null ;
+            if (q){
+                return arr
+            }
         })
-        // result = await FileModel.find({"tags.solution": solutionsArr[-1], tags.benefits: , tags.prerequisites:  })
+        dbQuery = {}
+        for (let i = 0; i < 3; i++ ){
+            if (test[i]){
+                // console.log(test[i]);
+                switch (i){
+                    case 0:
+                    dbQuery["tags.solution"] = test[i][test[i].length-1];
+                    break;
+                    case 1:
+                    dbQuery["tags.benefits"] = test[i];
+                    break;
+                    case 2:
+                    dbQuery["tags.prerequisites"] = test[i];
+                    break;
+                }
+            }
+        }
+        console.log(dbQuery)
+        result = await FileModel.find(dbQuery)
     }
     res.json(result);
 }
@@ -75,7 +96,7 @@ async function show(req,res){
     const stream = await s3.getObject({Bucket: s3_Bucket, Key: key}).createReadStream();
     stream.on("error", (err)=>{
         console.log(err);
-        res.send("Lesson Content Does Not exist");
+        res.send("Requested Lesson Does Not Exist");
     })
     stream.pipe(res);
 }
