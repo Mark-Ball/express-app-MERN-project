@@ -11,10 +11,11 @@ describe('Check Mocha is working in files_controller.test', function() {
 });
 
 describe('PDF display functionality', function() {
-    it('PDF show working', () => {
-        // get request to /file/:key
+    it('PDF show working', async () => {
+        const response = await supertest(app)
+            .get('/file/1580707463322.pdf')
 
-        // use key to request pdf from s3 bucket
+        expect(response.status).to.equal(200)
 
         // expect to get a steam back
     })

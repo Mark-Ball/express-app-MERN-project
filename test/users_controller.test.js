@@ -107,7 +107,7 @@ describe('Admin tests', async function() {
         expect(response.status).to.equal(401);
     });
 
-    it('non-admin cannot access /users endpoint', async function() {
+    it.only('non-admin cannot access /users endpoint', async function() {
         const { body: jwt } = await supertest(app)
             .post('/login')
             .send({
@@ -117,7 +117,8 @@ describe('Admin tests', async function() {
 
         const response = await supertest(app)
             .get('/users')
-            .send('Authorization', 'Bearer ' + jwt);
+            .set('Authorization', 'Bearer ' + jwt)
+            .send();
 
         expect(response.status).to.equal(401);
     })
@@ -132,7 +133,8 @@ describe('Admin tests', async function() {
 
         const response = await supertest(app)
             .get('/users')
-            .send('Authorization', 'Bearer ' + jwt);
+            .set('Authorization', 'Bearer ' + jwt)
+            .send();
 
         expect(response.status).to.equal(200);
     });
