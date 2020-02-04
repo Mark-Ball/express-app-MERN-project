@@ -7,6 +7,8 @@ const adminAuth = require('./../config/admin_auth');
 require('./../config/passport');
 
 router.get('/', (req, res) => { res.send('hello world') });
+
+// post new user and saves to database
 router.post('/newuser', UsersController.registerUser);
 
 // user login authenticated using passport local strategy
@@ -16,15 +18,16 @@ router.post('/login',
     UsersController.loginSuccess
 );
 
-router.post("/createFile", FilesController.saveFile);
 // get route to return whether the request came from the admin
 router.get('/confirmAdmin', passport.authenticate('jwt', { session: false }), adminAuth, UsersController.confirmAdmin);
 
+// posts search query to retrieve files matching query
 router.post("/category", FilesController.searchFiles);
 
 // file retriever that gets the corresponding file dependant on the key 
 router.get("/file/:key", FilesController.show);
 
+// posts pdf file to s3 bucket also stores record of file in database
 router.post('/file/upload', passport.authenticate('jwt', { session: false }), adminAuth, FilesController.saveFile);
 
 // get route to get all users
