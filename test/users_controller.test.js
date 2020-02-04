@@ -107,7 +107,7 @@ describe('Admin tests', async function() {
         expect(response.status).to.equal(401);
     });
 
-    it.only('non-admin cannot access /users endpoint', async function() {
+    it('non-admin cannot access /users endpoint', async function() {
         const { body: jwt } = await supertest(app)
             .post('/login')
             .send({
@@ -139,8 +139,22 @@ describe('Admin tests', async function() {
         expect(response.status).to.equal(200);
     });
     
-    it('non-admin cannot access /toggleApproval endpoint', function() {
+    it('non-admin cannot access /toggleApproval endpoint', async function() {
+        const { body: jwt } = await supertest(app)
+            .post('/login')
+            .send({
+                email: 'mark@test.com',
+                password: 'qwerty'
+            });
 
+        // const user = await UserModel.find()
+
+        const response = await supertest(app)
+            .post('/toggleApproval')
+            .set('Authorization', 'Bearer ' + jwt)
+            // .send({ id:  });
+
+        expect(response.status).to.equal(401);
     });
 
     it('admin can access /toggleApproval endpoint', function() {

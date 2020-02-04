@@ -74,8 +74,8 @@ async function show(req,res){
     
     const stream = await s3.getObject({Bucket: s3_Bucket, Key: key}).createReadStream();
     stream.on("error", (err)=>{
-        console.log(err);
-        res.send("Lesson Content Does Not exist");
+        // console.log(err);
+        res.status('400').send("Lesson Content Does Not exist");
     })
     stream.pipe(res);
 }

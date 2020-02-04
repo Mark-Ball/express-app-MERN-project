@@ -28,7 +28,7 @@ router.get("/file/:key", FilesController.show);
 router.post('/file/upload', passport.authenticate('jwt', { session: false }), adminAuth, FilesController.saveFile);
 
 // get route to get all users
-router.get('/users', passport.authenticate('jwt', { session: false }), /*adminAuth,*/ UsersController.getUsers);
+router.get('/users', passport.authenticate('jwt', { session: false }), adminAuth, UsersController.getUsers);
 
 // post route to toggle the approval status on a user
 router.post('/toggleApproval', passport.authenticate('jwt', { session: false }), adminAuth, UsersController.toggleApproval);

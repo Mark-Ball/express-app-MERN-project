@@ -11,12 +11,22 @@ describe('Check Mocha is working in files_controller.test', function() {
 });
 
 describe('PDF display functionality', function() {
-    it('PDF show working', async () => {
+    it('PDF show returns 200 status', async function() {
+        const files = await FileModel.find();
+        const file = files[0].location;
+
         const response = await supertest(app)
-            .get('/file/1580707463322.pdf')
+            .get(`/file/${file}`);
 
-        expect(response.status).to.equal(200)
-
-        // expect to get a steam back
+        expect(response.status).to.equal(200);
     })
+
+    it('PDF show returns 400 if search string invalid', async function() {
+        const response = await supertest(app)
+            .get('/file/12345.pdf');
+
+        expect(response.status).to.equal(400);
+    })
+
+
 })
