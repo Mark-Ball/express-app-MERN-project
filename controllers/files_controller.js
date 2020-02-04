@@ -13,8 +13,6 @@ aws.config.update({
 // Create S3 service object
 const s3 = new aws.S3({apiVersion: '2006-03-01'});
 const s3_Bucket = process.env.Bucket;
-// variable used as a unique variable name to be stored in bucket
-
 
 // save file to db and s3
 async function saveFile(req, res) {
@@ -37,6 +35,7 @@ async function saveFile(req, res) {
         } else if (err) {
             return res.status(500).json(err)
         }
+
         // logic to write into MongoDB
         await FileModel.create({
             name: name, tags: { solution: solution, createdOn: dateCreated, proficiency: proficiency, content: lessonContent, 
@@ -48,15 +47,21 @@ async function saveFile(req, res) {
 
 // retrieve files based on search
 async function searchFiles(req, res) {
-    const { querySolution, queryBenefits } = req.body;
+    const { querySolution, queryBenefits, queryPrereqs, query, solutionsArr, teamsArr, prereqArr } = req.body;
     let result;
-    console.log(queryBenefits, querySolution);
+    console.log(queryBenefits, querySolution, queryPrereqs);
     if(querySolution){
         result = await FileModel.find({ "tags.solution": querySolution });
     } else if (queryBenefits) {
         result = await FileModel.find({"tags.benefits": queryBenefits});
-    }   else {
-        // result = await FileModel.find();
+    }   else if (queryPrereqs) {
+        result = await FileModel.find({"tags.prerequisites": queryPrereqs});
+    }   else if (query[0]){
+        const advQuery = [solutionsArr, teamsArr, prereqArr ];
+        advQuery.map(arr=>{
+            (Array.isArray(arr) && arr.length) ? arr : null ;
+        })
+        // result = await FileModel.find({"tags.solution": solutionsArr[-1], tags.benefits: , tags.prerequisites:  })
     }
     res.json(result);
 }
@@ -66,10 +71,11 @@ async function show(req,res){
     const {key} = req.params;
 
     // Call S3 to get an object creates readable stream for display on the front end
+    
     const stream = await s3.getObject({Bucket: s3_Bucket, Key: key}).createReadStream();
     stream.on("error", (err)=>{
         console.log(err);
-        res.end(err);
+        res.send("Lesson Content Does Not exist");
     })
     stream.pipe(res);
 }
