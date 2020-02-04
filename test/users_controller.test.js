@@ -29,12 +29,6 @@ after(async function() {
     await mongoose.connection.close();
 });
 
-describe('Check Mocha is working in users_controller.test', function() {
-    it('true is true', () => {
-        expect(true).to.be.true;
-    });
-});
-
 describe('User registration tests', function() {
     it('a user written to the database can be retrieved by a search', async function() {
         const userEmail = 'test@gmail.com';
@@ -121,7 +115,7 @@ describe('Admin tests', async function() {
             .send();
 
         expect(response.status).to.equal(401);
-    })
+    });
 
     it('admin can access /users endpoint', async function() {
         const { body: jwt } = await supertest(app)
@@ -138,26 +132,4 @@ describe('Admin tests', async function() {
 
         expect(response.status).to.equal(200);
     });
-    
-    it('non-admin cannot access /toggleApproval endpoint', async function() {
-        const { body: jwt } = await supertest(app)
-            .post('/login')
-            .send({
-                email: 'mark@test.com',
-                password: 'qwerty'
-            });
-
-        // const user = await UserModel.find()
-
-        const response = await supertest(app)
-            .post('/toggleApproval')
-            .set('Authorization', 'Bearer ' + jwt)
-            // .send({ id:  });
-
-        expect(response.status).to.equal(401);
-    });
-
-    it('admin can access /toggleApproval endpoint', function() {
-
-    });
-})
+});
