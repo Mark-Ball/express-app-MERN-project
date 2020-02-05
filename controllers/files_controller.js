@@ -33,7 +33,7 @@ function saveFile(req, res) {
     const upload = multer({ storage: storage }).single('file');
 
     upload(req, res, async function (err) {
-        const { name, solution, dateCreated, proficiency, lessonContent, description, prerequisites, whoItBenefits } = req.body;
+        const { name, solution, generic, dateCreated, proficiency, lessonContent, description, prerequisites, whoItBenefits } = req.body;
         if (err instanceof multer.MulterError) {
             return res.status(500).json(err)
         } else if (err) {
@@ -43,7 +43,7 @@ function saveFile(req, res) {
         try {
             // logic to write into MongoDB
             await FileModel.create({
-                name: name, tags: { solution: solution, createdOn: dateCreated, proficiency: proficiency, content: lessonContent, 
+                name: name, tags: { solution: solution, generic: generic, createdOn: dateCreated, proficiency: proficiency, content: lessonContent, 
                 description: description, prerequisites: prerequisites.split(","), benefits: whoItBenefits.split(",")  }, location: fileName + ".pdf" 
             });
             return res.status(200).send(req.file);
@@ -55,11 +55,11 @@ function saveFile(req, res) {
 
 // retrieve files based on search
 async function searchFiles(req, res) {
+    console.log(req.user);
     const { querySolution, queryBenefits, queryPrereqs, value, solutionsArr, teamsArr, prereqArr } = req.body;
     let result;
     try {
         if(querySolution){
-            console.log(querySolution);
             result = await FileModel.find({ "tags.solution": querySolution });
         } else if (queryBenefits) {
             result = await FileModel.find({"tags.benefits": queryBenefits});
