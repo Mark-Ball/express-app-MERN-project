@@ -7,34 +7,25 @@ const adminAuth = require('./../config/admin_auth');
 const userViewAuth = require("./../config/user_content_auth");
 require('./../config/passport');
 
+// test route
 router.get('/', (req, res) => { res.send('hello world') });
 
-// post new user and saves to database
+// register and login routes
 router.post('/newuser', UsersController.registerUser);
+router.post('/login', passport.authenticate('local', { session : false }), UsersController.loginSuccess);
 
-// user login authenticated using passport local strategy
-// passport responds with 400-series status codes if authenticate fails
-router.post('/login', 
-    passport.authenticate('local', { session : false }),
-    UsersController.loginSuccess
-);
-
-// get route to return whether the request came from the admin
-router.get('/confirmAdmin', passport.authenticate('jwt', { session: false }), adminAuth, UsersController.confirmAdmin);
-
-// posts search query to retrieve files matching query
+// files routes
 router.post("/category", FilesController.searchFiles);
-
-// file retriever that gets the corresponding file dependant on the key 
 router.get("/file/:key", FilesController.show);
 
-// posts pdf file to s3 bucket also stores record of file in database
-router.post('/file/upload', passport.authenticate('jwt', { session: false }), adminAuth, FilesController.saveFile);
+// admin routes
+router.get('/confirmAdmin', passport.authenticate('jwt', { session: false }), adminAuth, UsersController.confirmAdmin);
 
-// get route to get all users
+// admin users functionality
 router.get('/users', passport.authenticate('jwt', { session: false }), adminAuth, UsersController.getUsers);
-
-// post route to toggle the approval status on a user
 router.post('/toggleApproval', passport.authenticate('jwt', { session: false }), adminAuth, UsersController.toggleApproval);
+
+// admin files functionality
+router.post('/file/upload', passport.authenticate('jwt', { session: false }), adminAuth, FilesController.saveFile);
 
 module.exports = router;
