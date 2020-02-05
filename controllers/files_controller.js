@@ -49,20 +49,20 @@ async function saveFile(req, res) {
 async function searchFiles(req, res) {
     const { querySolution, queryBenefits, queryPrereqs, query, solutionsArr, teamsArr, prereqArr } = req.body;
     let result;
-    console.log(queryBenefits, querySolution, queryPrereqs);
+    // console.log(queryBenefits, querySolution, queryPrereqs);
     if(querySolution){
         result = await FileModel.find({ "tags.solution": querySolution });
     } else if (queryBenefits) {
         result = await FileModel.find({"tags.benefits": queryBenefits});
     }   else if (queryPrereqs) {
         result = await FileModel.find({"tags.prerequisites": queryPrereqs});
-    }   else if (query[0]){
+    }   /*else if (query[0]){
         const advQuery = [solutionsArr, teamsArr, prereqArr ];
         advQuery.map(arr=>{
             (Array.isArray(arr) && arr.length) ? arr : null ;
         })
         // result = await FileModel.find({"tags.solution": solutionsArr[-1], tags.benefits: , tags.prerequisites:  })
-    }
+    }*/
     res.json(result);
 }
 
@@ -74,8 +74,8 @@ async function show(req,res){
     
     const stream = await s3.getObject({Bucket: s3_Bucket, Key: key}).createReadStream();
     stream.on("error", (err)=>{
-        console.log(err);
-        res.send("Lesson Content Does Not exist");
+        // console.log(err);
+        res.status('400').send("Lesson Content Does Not exist");
     })
     stream.pipe(res);
 }

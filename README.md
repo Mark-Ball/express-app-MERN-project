@@ -7,6 +7,21 @@ Verb | Endpoint | Controller | Method | Description
 POST | /newuser | user | registerUser | Creates new user in database
 POST | /login | user | loginSuccess | Authenticates email and password, returns JWT if successful
 
+# Testing
+
+Testing was conducted with a combination of automated and manual tests.
+
+## Testing in development
+
+Testing in development was conducted using the Mocha and Chai packages. Testing of the Express app focused on the users and the files controllers. Tests can be run from the root of the project by typing into the terminal
+```
+npm test
+```
+
+## Testing in production
+
+
+
 # Packages used
 
 ## In production
