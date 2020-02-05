@@ -4,6 +4,7 @@ const UsersController = require('./../controllers/users_controller');
 const FilesController = require('./../controllers/files_controller');
 const passport = require('passport');
 const adminAuth = require('./../config/admin_auth');
+const userViewAuth = require("./../config/user_content_auth");
 require('./../config/passport');
 
 // test route
@@ -14,7 +15,6 @@ router.post('/newuser', UsersController.registerUser);
 router.post('/login', passport.authenticate('local', { session : false }), UsersController.loginSuccess);
 
 // files routes
-router.post("/createFile", FilesController.saveFile);
 router.post("/category", FilesController.searchFiles);
 router.get("/file/:key", FilesController.show);
 
