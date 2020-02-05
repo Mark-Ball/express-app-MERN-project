@@ -1,12 +1,22 @@
+# AccordantHelp MERN Stack Project
+
+React app: http://accordanthelp-react.s3-website-ap-southeast-2.amazonaws.com/
+
+Express app: https://accordanthelp.herokuapp.com/
+
+React repo: https://github.com/JC-Ferguson/react-app-MERN-project
+
+Express repo: https://github.com/Mark-Ball/express-app-MERN-project
+
 ## Getting started
 
 To deploy this app, take the following steps:
 
 1. Clone the two (React app and Express app) repos. 
 
-```https://github.com/Mark-Ball/express-app-MERN-project.git```
+```git clone https://github.com/Mark-Ball/express-app-MERN-project.git```
 
-```https://github.com/JC-Ferguson/react-app-MERN-project.git```
+```git clone https://github.com/JC-Ferguson/react-app-MERN-project.git```
 
 2. Set up environment variables.
 
@@ -33,15 +43,15 @@ REACT_APP_EXPRESS=<yourExpressAppURL>
 
 4. Run the project in development mode with ```npm run dev``` or production mode with ```npm start```. The difference is that in development mode, the app will restart if changes are made to the files, and will restart after crashing.
 
+# Project Management
 
-## Routes
+The project used a physical kanban board to visualise the progression of features in the project.
 
-__Table 1.__ Summary of routes
+To plan which features should be completed first, 'scrum poker' was used to estimate the complexity and importance of each feature. Each feature was categorised into one of four boxes inside the To-Do column, representing the priority of the feature.
 
-Verb | Endpoint | Controller | Method | Description
----|---|---|---|---
-POST | /newuser | user | registerUser | Creates new user in database
-POST | /login | user | loginSuccess | Authenticates email and password, returns JWT if successful
+The highest priority features are the ones with high importance and low complexity, and the lowest priority features are the ones with low importance and high complexity. Features in the other two boxes, high importance-high complexity and low importance-low complexity are intermediate. This categorisation allows makes the decision of which features to work on easier.
+
+Work was split by feature, with a single developer being responsible for both the front-end and back-end implementation of that feature. The benefit of this approach was that it was easier to integrate the front and back ends because a single developer knew what data was being sent through the application.
 
 # Testing
 
@@ -102,8 +112,6 @@ The following packages were used in the production environment.
 - __redux__ and __react-redux__: used to enable the use of global state, so that state does not have to be lifted. Redux is not designed to work specifically with React, so the react-redux package is necessary to allow the two to be integrated.
 - __react-router-dom__: allows access to the BrowserRouter and Route components, so the app can have different url endpoints.
 - __semantic-ui-react__: official React integration for Semantic UI, allowing augmentations to html elements and access to pre-defined styling.
-
-
 
 ## In development
 
