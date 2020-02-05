@@ -4,7 +4,6 @@ const UsersController = require('./../controllers/users_controller');
 const FilesController = require('./../controllers/files_controller');
 const passport = require('passport');
 const adminAuth = require('./../config/admin_auth');
-const userViewAuth = require("./../config/user_content_auth");
 require('./../config/passport');
 
 // test route
