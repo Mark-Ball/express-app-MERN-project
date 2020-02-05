@@ -17,22 +17,20 @@ async function registerUser(req, res) {
             return;
         }
 
-        const { _id } = await UserModel.create({ email, password, approved: false, pending: true });
-        const token = createJWT(_id);
-        res.json(token);
+        const newUser = await UserModel.create({ email, password, approved: false, pending: true });
+        console.log(newUser);
+        const token = createJWT(newUser._id);
+        res.json({ token, user: newUser });
 
     } catch(error) {
         res.sendStatus('400');
     }
 }
 
-// correct login details provided, create JWT and send
+// correct login details provided, create JWT and send it and user record
 function loginSuccess(req, res) {
-    // create the JWT using the user's unique MongoDB id and secret frm .env file
-    // const token = jwt.sign({ sub: req.user._id }, process.env.JWT_SECRET);
     const token = createJWT(req.user._id);
-    // respond with the JWT as json
-    res.json(token);
+    res.json({ token, user: req.user });
 }
 
 // respond with 200 status
