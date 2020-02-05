@@ -17,8 +17,8 @@ async function registerUser(req, res) {
             return;
         }
 
-        const newUser = await UserModel.create({ email, password, approved: false, pending: true });
-        console.log(newUser);
+        const date = new Date();
+        const newUser = await UserModel.create({ email, password, dateCreated: date, approved: false, pending: true });
         const token = createJWT(newUser._id);
         res.json({ token, user: newUser });
 
