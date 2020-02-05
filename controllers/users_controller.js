@@ -17,7 +17,8 @@ async function registerUser(req, res) {
             return;
         }
 
-        const { _id } = await UserModel.create({ email, password, approved: false, pending: true });
+        const date = new Date();
+        const { _id } = await UserModel.create({ email, password, dateCreated: date, approved: false, pending: true });
         const token = createJWT(_id);
         res.json(token);
 

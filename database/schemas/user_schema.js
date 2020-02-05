@@ -21,8 +21,7 @@ const UserSchema = new Schema({
         default: true
     },
     dateCreated: {
-        type: Date,
-        default: Date.now
+        type: Date
     },
     admin: {
         type: Boolean,
