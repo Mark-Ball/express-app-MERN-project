@@ -61,6 +61,10 @@ The progression of tickets on the kanban board is presented in the figures below
 
 __Figure 1.__ Kanban board at Day 1
 
+![kanban_2](./docs/kanban_2.jpg)
+
+__Figure 2.__ Kanban board on final day
+
 # Testing
 
 Testing was conducted with a combination of automated and manual tests.
@@ -76,7 +80,7 @@ npm test
 
 Testing in production was conducted manually. The Express app was tested using Postman, and the React app (which was connected to the Express app) was tested in the browser. Before testing, a series of tests were written, including what data would be entered and the expected result of the test. The results of these tests are provided below.
 
-EXCEL SCREENSHOT HERE
+![production_testing](./docs/production_testing.jpg)
 __Figure 1. Production tests__
 
 # Packages used
