@@ -57,7 +57,6 @@ function saveFile(req, res) {
 
 // retrieve files based on search
 async function searchFiles(req, res) {
-    console.log(req.user);
     const { querySolution, queryBenefits, queryPrereqs, value, solutionsArr, teamsArr, prereqArr } = req.body;
     let result;
     try {
@@ -74,9 +73,11 @@ async function searchFiles(req, res) {
                 if (advQuery[i][0]){
                     switch (i){
                         case 0:
-                            const shorten = advQuery[i].map(solution=> solution.match(/(?<=\().*(?=\))/));
-                            const solutions = shorten.map(solution=>solution[0]);
-                            dbQuery["tags.solution"] = solutions;
+                            const shorten = advQuery[i].map(solution => {
+                                const value = solution === 'Other' ? 'Other' : solution.match(/(?<=\().*(?=\))/)[0];
+                                return value;
+                            });
+                            dbQuery["tags.solution"] = shorten;
                             break;
                         case 1:
                             dbQuery["tags.benefits"] = advQuery[i];
