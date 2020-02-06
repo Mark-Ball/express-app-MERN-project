@@ -70,7 +70,7 @@ describe('Login tests', function() {
             });
 
         expect(response.status).to.equal(200);
-        expect(/.*\..*\./.test(response.body)).to.be.true;     
+        expect(/.*\..*\./.test(response.body.token)).to.be.true;     
     })
 
     it('POST /login fails with no details', async function() {
@@ -102,7 +102,7 @@ describe('Admin tests', async function() {
     });
 
     it('non-admin cannot access /users endpoint', async function() {
-        const { body: jwt } = await supertest(app)
+        const { body } = await supertest(app)
             .post('/login')
             .send({
                 email: 'mark@test.com',
@@ -111,14 +111,14 @@ describe('Admin tests', async function() {
 
         const response = await supertest(app)
             .get('/users')
-            .set('Authorization', 'Bearer ' + jwt)
+            .set('Authorization', 'Bearer ' + body.token)
             .send();
 
         expect(response.status).to.equal(401);
     });
 
     it('admin can access /users endpoint', async function() {
-        const { body: jwt } = await supertest(app)
+        const { body } = await supertest(app)
             .post('/login')
             .send({
                 email: 'admin',
@@ -127,7 +127,7 @@ describe('Admin tests', async function() {
 
         const response = await supertest(app)
             .get('/users')
-            .set('Authorization', 'Bearer ' + jwt)
+            .set('Authorization', 'Bearer ' + body.token)
             .send();
 
         expect(response.status).to.equal(200);

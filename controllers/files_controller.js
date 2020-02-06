@@ -30,8 +30,10 @@ function saveFile(req, res) {
         }
     });
 
+    // uploads to s3
     const upload = multer({ storage: storage }).single('file');
 
+    // checks for errors, if no error, write document to MongoDB
     upload(req, res, async function (err) {
         const { name, solution, generic, dateCreated, proficiency, lessonContent, description, prerequisites, whoItBenefits } = req.body;
         if (err instanceof multer.MulterError) {
@@ -55,7 +57,6 @@ function saveFile(req, res) {
 
 // retrieve files based on search
 async function searchFiles(req, res) {
-    console.log(req.user);
     const { querySolution, queryBenefits, queryPrereqs, value, solutionsArr, teamsArr, prereqArr } = req.body;
     let result;
     try {
@@ -63,25 +64,27 @@ async function searchFiles(req, res) {
             result = await FileModel.find({ "tags.solution": querySolution });
         } else if (queryBenefits) {
             result = await FileModel.find({"tags.benefits": queryBenefits});
-        }   else if (queryPrereqs) {
+        } else if (queryPrereqs) {
             result = await FileModel.find({"tags.prerequisites": queryPrereqs});
-        }   else if (value[0]){
+        } else if (value[0]) {
             const advQuery = [solutionsArr, teamsArr, prereqArr ];
             dbQuery = {};
             for (let i = 0; i < 3; i++ ){
                 if (advQuery[i][0]){
                     switch (i){
                         case 0:
-                            const shorten = advQuery[i].map(solution=> solution.match(/(?<=\().*(?=\))/));
-                            const solutions = shorten.map(solution=>solution[0]);
-                            dbQuery["tags.solution"] = solutions;
-                        break;
+                            const shorten = advQuery[i].map(solution => {
+                                const value = solution === 'Other' ? 'Other' : solution.match(/(?<=\().*(?=\))/)[0];
+                                return value;
+                            });
+                            dbQuery["tags.solution"] = shorten;
+                            break;
                         case 1:
                             dbQuery["tags.benefits"] = advQuery[i];
-                        break;
+                            break;
                         case 2:
                             dbQuery["tags.prerequisites"] = advQuery[i];
-                        break;
+                            break;
                     };
                 };
             };

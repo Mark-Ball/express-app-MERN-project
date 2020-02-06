@@ -17,9 +17,6 @@ router.post('/login', passport.authenticate('local', { session : false }), Users
 router.post("/category", FilesController.searchFiles);
 router.get("/file/:key", FilesController.show);
 
-// admin routes
-router.get('/confirmAdmin', passport.authenticate('jwt', { session: false }), adminAuth, UsersController.confirmAdmin);
-
 // admin users functionality
 router.get('/users', passport.authenticate('jwt', { session: false }), adminAuth, UsersController.getUsers);
 router.post('/toggleApproval', passport.authenticate('jwt', { session: false }), adminAuth, UsersController.toggleApproval);

@@ -9,6 +9,7 @@ let mongoose;
 
 // before running the tests, connect to the db and create 1 user and 1 admin
 before(async function() {
+    // await FileModel.create({ name: 'test file', tags: { solution: 'Other'}, location: '1580861135309.pdf' });
     mongoose = await dbConnect();
 });
 
@@ -18,16 +19,6 @@ after(async function() {
 });
 
 describe('PDF display functionality', function() {
-    it('PDF show returns 200 status', async function() {
-        const files = await FileModel.find();
-        const file = files[0].location;
-
-        const response = await supertest(app)
-            .get(`/file/${file}`);
-
-        expect(response.status).to.equal(200);
-    });
-
     it('PDF show returns 400 if search string invalid', async function() {
         const response = await supertest(app)
             .get('/file/12345.pdf');
