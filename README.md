@@ -53,6 +53,14 @@ The highest priority features are the ones with high importance and low complexi
 
 Work was split by feature, with a single developer being responsible for both the front-end and back-end implementation of that feature. The benefit of this approach was that it was easier to integrate the front and back ends because a single developer knew what data was being sent through the application.
 
+Features were developed on their own branches, and named with a description of the feature. Before creating a pull request to add the features to master, the master branch was checked out and merged into the branch. Any merge conflict were then handled on the branch and tested before the pull request was made to merge the branch into master.
+
+The progression of tickets on the kanban board is presented in the figures below.
+
+![kanban_1](./docs/kanban_1.jpg)
+
+__Figure 1.__ Kanban board at Day 1
+
 # Testing
 
 Testing was conducted with a combination of automated and manual tests.
@@ -72,18 +80,6 @@ EXCEL SCREENSHOT HERE
 __Figure 1. Production tests__
 
 # Packages used
-
-are these packages used?
-- Express
-    - fs
-    - jest
-
-- React
-    - aws-sdk
-    - bootstrap
-    - dotenv
-    - react-bootstrap
-    - react-pdf
 
 ## In production
 
