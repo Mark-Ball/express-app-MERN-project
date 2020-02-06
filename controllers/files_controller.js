@@ -30,8 +30,10 @@ function saveFile(req, res) {
         }
     });
 
+    // uploads to s3
     const upload = multer({ storage: storage }).single('file');
 
+    // checks for errors, if no error, write document to MongoDB
     upload(req, res, async function (err) {
         const { name, solution, generic, dateCreated, proficiency, lessonContent, description, prerequisites, whoItBenefits } = req.body;
         if (err instanceof multer.MulterError) {
@@ -63,9 +65,9 @@ async function searchFiles(req, res) {
             result = await FileModel.find({ "tags.solution": querySolution });
         } else if (queryBenefits) {
             result = await FileModel.find({"tags.benefits": queryBenefits});
-        }   else if (queryPrereqs) {
+        } else if (queryPrereqs) {
             result = await FileModel.find({"tags.prerequisites": queryPrereqs});
-        }   else if (value[0]){
+        } else if (value[0]) {
             const advQuery = [solutionsArr, teamsArr, prereqArr ];
             dbQuery = {};
             for (let i = 0; i < 3; i++ ){
@@ -75,13 +77,13 @@ async function searchFiles(req, res) {
                             const shorten = advQuery[i].map(solution=> solution.match(/(?<=\().*(?=\))/));
                             const solutions = shorten.map(solution=>solution[0]);
                             dbQuery["tags.solution"] = solutions;
-                        break;
+                            break;
                         case 1:
                             dbQuery["tags.benefits"] = advQuery[i];
-                        break;
+                            break;
                         case 2:
                             dbQuery["tags.prerequisites"] = advQuery[i];
-                        break;
+                            break;
                     };
                 };
             };

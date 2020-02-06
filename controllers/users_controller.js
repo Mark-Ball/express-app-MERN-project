@@ -33,46 +33,30 @@ function loginSuccess(req, res) {
     res.json({ token, user: req.user });
 }
 
-// respond with 200 status
-// middleware has already checked that the user is the admin
-function confirmAdmin(req, res) {
-    res.sendStatus('200');
-}
-
 // retrieve users from database
 async function getUsers(req, res) {
     try {
-        // query the database for all users
         const users = await UserModel.find();
-        // respond with all users as JSON
         res.json(JSON.stringify(users));
     } catch(error) {
-        // if there is an error, respond with 400 status
         res.sendStatus('400');
     }
 }
 
-// toggle approval on specific user
+// toggle approval on specific user, if successful respond with 200 status
 async function toggleApproval(req, res) {
     try {
-        // the user document to update is identified by the id on the request
         const { id } = req.body;
-        // get the user document
         let { approved } = await UserModel.findById(id);
-        // reverse the approval status
         approved = !approved;
-        // update the document with new approval status
-        // updateOne will return an object if successful, else return nothing
         const updateSucceeded = await UserModel.updateOne({ _id: id }, { approved: approved, pending: false });
-        // if update was successful, respond with 200 status
+
         if (updateSucceeded) {
             res.sendStatus('200');
-        // if update unsuccessful, respond with 400 status
         } else {
             res.sendStatus('400');
         }
     } catch(error) {
-        // if there is an error, respond with 400 status
         res.sendStatus('400');
     }
 }
@@ -80,7 +64,6 @@ async function toggleApproval(req, res) {
 module.exports = {
     registerUser,
     loginSuccess,
-    confirmAdmin,
     getUsers,
     toggleApproval
 }
