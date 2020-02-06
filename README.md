@@ -51,7 +51,7 @@ To plan which features should be completed first, 'scrum poker' was used to esti
 
 The highest priority features are the ones with high importance and low complexity, and the lowest priority features are the ones with low importance and high complexity. Features in the other two boxes, high importance-high complexity and low importance-low complexity are intermediate. This categorisation allows makes the decision of which features to work on easier.
 
-Work was split by feature, with a single developer being responsible for both the front-end and back-end implementation of that feature. The benefit of this approach was that it was easier to integrate the front and back ends because a single developer knew what data was being sent through the application.
+Work was split by feature, with a single developer being responsible for both the front-end and back-end implementation of that feature. The benefit of this approach was that it was easier to integrate the front and back ends because a single developer knew what data was being sent through the application. The features were assigned based on the individual's complexity assessment from Scrum Poker, meaning that each developer picked features to work on based on their confidence with the work.
 
 Features were developed on their own branches, and named with a description of the feature. Before creating a pull request to add the features to master, the master branch was checked out and merged into the branch. Any merge conflict were then handled on the branch and tested before the pull request was made to merge the branch into master.
 
