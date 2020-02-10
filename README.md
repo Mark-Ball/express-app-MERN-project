@@ -43,6 +43,24 @@ REACT_APP_EXPRESS=<yourExpressAppURL>
 
 4. Run the project in development mode with ```npm run dev``` or production mode with ```npm start```. The difference is that in development mode, the app will restart if changes are made to the files, and will restart after crashing.
 
+# Feature list
+
+The following table details features requested throughout the project and the status of those features at the conclusion of the project.
+
+Feature | Status
+---|---
+PDFs displayable on a webpage | Completed
+PDFs can be downloaded | Completed
+PDFs can be found through search | Completed. All PDFs have tags which are used to return search results.
+New PDFs can be uploaded to the system | Complete
+Content flagged with level of proficiency | Complete
+Content flagged if older than a year | Incomplete. The date that each document was created is displayed, but there is no additional warning.
+Lessons should be organised in a progression so users always know what they can work on next | Incomplete. 'Related content' is displayed for each document, based on similar tags, but lessons have not been organised in a strict progression.
+Account management to restrict access to documents | Incomplete. Accounts are marked as either approved or not, documents are marked as generic or non-generic content. Search functionality should check the approval status of the user and return different results depending on status, but this has not been implemented.
+The records attached to the PDFs (e.g. name, solution) can be editted | Not attempted
+PDFs and their records can be deleted | Not attempted
+Users should be able to see a measure of their progress through lessons and within the library | Not attempted
+
 # Project Management
 
 The project used a physical kanban board to visualise the progression of features in the project.
