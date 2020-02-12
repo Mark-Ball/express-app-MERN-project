@@ -57,18 +57,18 @@ function saveFile(req, res) {
 
 // retrieve files based on search
 async function searchFiles(req, res) {
-    const { querySolution, queryBenefits, queryPrereqs, value, solutionsArr, teamsArr, prereqArr } = req.body;
+    const { generic, querySolution, queryBenefits, queryPrereqs, value, solutionsArr, teamsArr, prereqArr } = req.body;
     let result;
     try {
         if(querySolution){
-            result = await FileModel.find({ "tags.solution": querySolution });
+            result = await FileModel.find({ "tags.solution": querySolution, ...generic });
         } else if (queryBenefits) {
-            result = await FileModel.find({"tags.benefits": queryBenefits});
+            result = await FileModel.find({"tags.benefits": queryBenefits, ...generic});
         } else if (queryPrereqs) {
-            result = await FileModel.find({"tags.prerequisites": queryPrereqs});
+            result = await FileModel.find({"tags.prerequisites": queryPrereqs, ...generic});
         } else if (value[0]) {
             const advQuery = [solutionsArr, teamsArr, prereqArr ];
-            dbQuery = {};
+            dbQuery = {...generic};
             for (let i = 0; i < 3; i++ ){
                 if (advQuery[i][0]){
                     switch (i){
